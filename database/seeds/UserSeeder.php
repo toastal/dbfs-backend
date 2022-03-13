@@ -23,6 +23,6 @@ class UserSeeder extends Seeder
             'password' => 'password'
         ]);
 
-        factory(App\Models\User::class, 100)->create(['is_admin' => false]);
+        
     }
 }
