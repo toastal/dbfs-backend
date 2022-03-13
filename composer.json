@@ -18,7 +18,8 @@
     "tymon/jwt-auth": "dev-develop",
     "barryvdh/laravel-cors": "^0.11.0",
     "reliese/laravel": "^0.0.13",
-    "matriphe/imageupload": "^6.1"
+    "matriphe/imageupload": "^6.1",
+    "csanquer/pdo-service-provider": "~1.1dev"
   },
   "require-dev": {
     "fzaninotto/faker": "~1.4",

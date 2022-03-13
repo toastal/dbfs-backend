@@ -13,7 +13,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        DB::statement('PRAGMA foreign_keys = ON;');
+        
         Model::unguard();
 
         $this->call(UserSeeder::class);
@@ -23,6 +23,6 @@ class DatabaseSeeder extends Seeder
         $this->call(PackageSeeder::class);
 
         Model::reguard();
-        DB::statement('PRAGMA foreign_keys = OFF;');
+        
     }
 }
