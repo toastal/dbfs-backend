@@ -10,6 +10,7 @@ namespace App\Services\Activity;
 
 use App\Constants;
 use App\Models\Activity;
+use App\Models\Subscription;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 /**
@@ -22,14 +23,19 @@ class ActivityService
      * @var Activity
      */
     public $activity;
-
+    /**
+     * @var Subscription
+     */
+    protected $subscription;
     /**
      * ActivityService constructor.
      * @param Activity $activity
+     * @param Subscription $subscription
      */
-    public function __construct(Activity $activity)
+    public function __construct(Activity $activity, Subscription $subscription)
     {
         $this->activity = $activity;
+        $this->subscription = $subscription;
     }
 
     /**
@@ -54,11 +60,17 @@ class ActivityService
      */
     public function attend($userId, $description)
     {
-        return $this->activity->create([
-            'entity_id' => $userId,
-            'type' => Constants::ACTIVITY_ATTENDANCE,
-            'description' => "User #$userId has $description",
-        ]);
+        $subscription = $this->subscription::where('user_id', $userId)->where('status', 'active')->firstOrFail();        
+        if ($subscription->status == "active") {
+            return $this->activity->create([
+                'entity_id' => $userId,
+                'type' => Constants::ACTIVITY_ATTENDANCE,
+                'description' => "User #$userId has $description",
+            ]);
+        } else {
+            throw new Exception("No active subscription");
+        }
+        
     }
 
     /**

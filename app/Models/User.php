@@ -88,7 +88,6 @@ class User extends Authenticatable implements JWTSubject
         'emergency_phone_number',
         'joining_date',
         'reference_id'
-
     ];
 
     /**
