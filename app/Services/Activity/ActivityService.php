@@ -12,6 +12,8 @@ use App\Constants;
 use App\Models\Activity;
 use App\Models\Subscription;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use DateTime;
+use Exception;
 
 /**
  * Class ActivityService
@@ -60,17 +62,21 @@ class ActivityService
      */
     public function attend($userId, $description)
     {
-        $subscription = $this->subscription::where('user_id', $userId)->where('status', 'active')->firstOrFail();        
-        if ($subscription->status == "active") {
+        try {
+            $date_now = new DateTime();
+            $subscription = $this->subscription::where('user_id', $userId)
+                                ->where('status', 'active')
+                                ->whereDate('expires_at', '>', $date_now)
+                                ->firstOrFail();                                    
             return $this->activity->create([
                 'entity_id' => $userId,
                 'type' => Constants::ACTIVITY_ATTENDANCE,
                 'description' => "User #$userId has $description",
-            ]);
-        } else {
-            throw new Exception("No active subscription");
+            ]);           
         }
-        
+        catch(Exception $e) {
+            throw new Exception("No active subscription");
+        }                     
     }
 
     /**
