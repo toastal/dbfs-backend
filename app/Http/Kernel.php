@@ -63,4 +63,9 @@ class Kernel extends HttpKernel
         'jwt.refresh' => RefreshToken::class,
         'admin' => UserAdmin::class,
     ];
+    public function bootstrap() 
+    {
+        app()->loadEnvironmentFrom('.env.development');
+        parent::bootstrap(); 
+    }
 }

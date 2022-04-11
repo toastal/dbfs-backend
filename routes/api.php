@@ -23,6 +23,7 @@ Route::group(['middleware' => ['jwt.auth', 'admin']], function() {
     Route::resource('packages', 'PackageController');
     Route::resource('users', 'UserController');
     Route::resource('subscriptions', 'SubscriptionController');
+    Route::resource('payments', 'PaymentController');
     Route::post('upload', 'ImageController@store');
     Route::get('/stats/subscriptions', 'StatisticsController@subscriptions');
     Route::get('/stats/services', 'StatisticsController@services');
