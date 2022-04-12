@@ -126,7 +126,9 @@ class UserController extends Controller
 
         $this->authorize('delete', $user);
 
-        $user = $this->userService->delete($user);
+        $user->is_deleted = true;        
+
+        $user->save();
 
         ActivityService::log($user->id, "#$user->id user account was deleted.");
 

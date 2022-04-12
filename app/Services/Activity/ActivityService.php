@@ -65,7 +65,7 @@ class ActivityService
         try {
             $date_now = new DateTime();
             $subscription = $this->subscription::where('user_id', $userId)
-                                ->where('status', 'active')
+                                ->where('status', 'active')                                
                                 ->whereDate('expires_at', '>', $date_now)
                                 ->firstOrFail();                                    
             return $this->activity->create([
