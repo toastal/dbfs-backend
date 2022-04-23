@@ -52,6 +52,8 @@ class PaymentService
             'amount_paid'       => $request['amount_paid'],
             'amount_balance'    => $request['amount_balance'],
             'reason'            => $request['reason'],
+            'mode'              => $request['mode'],
+            'receiver'              => $request['receiver'],
                     
         ]);
 

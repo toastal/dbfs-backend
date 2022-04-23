@@ -35,6 +35,8 @@ class Payments extends Model
         'user_id',    
         'amount_paid',    
         'amount_balance',       
-        'reason'         
+        'reason',
+        'mode',
+        'receiver'
     ];
 }

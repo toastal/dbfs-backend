@@ -19,6 +19,8 @@ class CreatePaymentsTable extends Migration
             $table->float('amount_paid');
             $table->float('amount_balance');
             $table->string('reason')->nullable();
+            $table->string('mode')->nullable();
+            $table->string('receiver')->nullable();
             $table->timestamps();                        
             $table->foreign('user_id')->references('id')->on('users');
         });
