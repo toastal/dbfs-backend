@@ -109,12 +109,12 @@ class User extends Authenticatable implements JWTSubject
      * @param  string  $value
      * @return void
      */
-    public function setAccountNumberAttribute($value)
-    {
-        $random = rand(10, 500);
+    // public function setAccountNumberAttribute($value)
+    // {
+    //     $random = $this->getKey();
         
-        $this->attributes['account_number'] = $value.$random;
-    }
+    //     $this->attributes['account_number'] = $value.$random;
+    // }
 
     /**
      * Automatically creates hash for the user password.
@@ -157,4 +157,15 @@ class User extends Authenticatable implements JWTSubject
     {
         $this->notify(new ForgotPassword($token));
     }
+
+    public static function boot()
+{
+    parent::boot();
+
+    static::created(function($model)
+    {        
+        $model->account_number = $model->name[0] . $model->id;
+        $model->save();
+    });
+}
 }

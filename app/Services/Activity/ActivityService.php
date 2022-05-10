@@ -64,14 +64,14 @@ class ActivityService
     {
         try {
             $date_now = new DateTime();
-            $subscription = $this->subscription::where('user_id', $userId)
-                                ->where('status', 'active')                                
-                                ->whereDate('expires_at', '>', $date_now)
-                                ->firstOrFail();                                    
+            // $subscription = $this->subscription::where('user_id', $userId)
+            //                     ->where('status', 'active')                                
+            //                     ->whereDate('expires_at', '>', $date_now)
+            //                     ->firstOrFail();                                    
             return $this->activity->create([
                 'entity_id' => $userId,
                 'type' => Constants::ACTIVITY_ATTENDANCE,
-                'description' => "User #$userId has $description",
+                'description' => "$description",
             ]);           
         }
         catch(Exception $e) {

@@ -8,8 +8,11 @@
 
 namespace App\Services\Activity;
 
+use DB;
 use App\Constants;
 use App\Models\Activity;
+use App\Models\Subscription;
+use App\Models\Package;
 
 /**
  * Class ActivityCollection
@@ -24,14 +27,18 @@ class ActivityCollection
      * @var Activity
      */
     public $activity;
+    public $subscription;
+    public $package;
 
     /**
      * ActivityCollection constructor.
      * @param Activity $activity
      */
-    public function __construct(Activity $activity)
+    public function __construct(Activity $activity, Subscription $subscription, Package $package)
     {
         $this->activity = $activity;
+        $this->subscription = $subscription;
+        $this->package = $package;
     }
 
     /**
@@ -107,10 +114,22 @@ class ActivityCollection
     public function attendance($request = [])
     {
         $builder = $this->activity->select([
-            'activities.*', 'users.name', 'users.id AS user_id', 'users.avatar', 'users.email'
+            'activities.*', 'packages.name AS package_name', 'currSubscription.status AS status', 'currSubscription.expires_at AS expires_at', 'users.name', 'users.id AS user_id', 'users.avatar', 'users.email', 'users.is_admin AS is_admin'
         ]);
 
         $builder =  $builder->join('users', 'users.id', '=', 'activities.entity_id');
+        
+
+        $builder = $builder->leftJoin(DB::raw('(SELECT * from subscriptions order by id desc limit 1)
+        AS "currSubscription"'), 
+        function($join)
+        {
+           $join->on('currSubscription.user_id', '=', 'activities.entity_id');
+        });        
+
+        $builder = $builder->leftJoin('packages', 'packages.id', '=', 'currSubscription.package_id');
+
+        $builder = $builder->where('is_admin', false);
 
         $request['type'] = Constants::ACTIVITY_ATTENDANCE;
 
