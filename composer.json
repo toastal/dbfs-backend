@@ -15,7 +15,7 @@
     "php": "7.3.*",
     "laravel/framework": "5.7.*",
     "fideloper/proxy": "^4.0",
-    "tymon/jwt-auth": "dev-develop",
+    "tymon/jwt-auth": "*",
     "barryvdh/laravel-cors": "^0.11.0",
     "reliese/laravel": "^0.0.13",
     "matriphe/imageupload": "^6.1",
@@ -25,7 +25,7 @@
     "phpunit/phpunit": "^7.0",
     "symfony/css-selector": "3.1.*",
     "symfony/dom-crawler": "3.1.*",
-    "ext-gd": "*"
+    "cloudinary/cloudinary_php": "^2"
   },
   "require-dev": {},
   "autoload": {

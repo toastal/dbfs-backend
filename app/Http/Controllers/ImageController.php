@@ -4,8 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ImageRequest as Request;
 use App\Models\Image;
-use Imageupload;
-use Illuminate\Support\Facades\Storage;
+use Cloudinary\Cloudinary;
+
 
 /**
  * Class ImageController
@@ -33,28 +33,22 @@ class ImageController extends Controller
      * @return \Illuminate\Http\JsonResponse
      */
     public function store(Request $request)
-    {
-        
-        if($request->hasFile('file')) {
-          
-            //get filename with extension
-            $filenamewithextension = $request->file('file')->getClientOriginalName();
-      
-            //get filename without extension
-            $filename = pathinfo($filenamewithextension, PATHINFO_FILENAME);
-      
-            //get file extension
-            $extension = $request->file('file')->getClientOriginalExtension();
-      
-            //filename to store
-            $filenametostore = $filename.'_'.uniqid().'.'.$extension;
-      
+    {        
+        if($request->hasFile('file')) {                           
             //Upload File to external server
-            Storage::disk('ftp')->put($filenametostore, fopen($request->file('file'), 'r+'));
-      
-            //Store $filenametostore in the database
-        }        
-        return json_encode([ 'filePath' => env('FTP_HTTP', 'http://dbfs.rf.gd/public/') . $filenametostore ]);
-        
+            $cloudinary = new Cloudinary([
+                'cloud' => [
+                'cloud_name' => 'dbfs', 
+                'api_key' => env('CLOUDINARY_API_KEY'), 
+                'api_secret' => env('CLOUDINARY_API_SECRET')],
+                'url' => [
+                'secure' => true]
+            ]);        
+            $filePath = $request->file->store('storage/uploads');
+            $fullFilePath = storage_path('app') . '/' . $filePath;
+            $response = $cloudinary->uploadApi()->upload($fullFilePath);
+            unlink($fullFilePath);
+            return $response;
+        }                                   
     }
 }
