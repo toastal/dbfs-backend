@@ -19,7 +19,7 @@ For professional support please email me at johndavedecano@gmail.com
 
 1. API Setup
 
-```bash
+```console
 $ git clone git@github.com:johndavedecano/laragym.git project
 $ cd project
 $ composer install
@@ -31,12 +31,17 @@ $ php artisan serve
 
 2. Frontend Setup
 
-```base
+```console
 $ cd project/resources/apps/frontend
 $ cp .env.example .env # edit this file accordingly
 $ yarn
 $ yarn start
-$ yarn build # for production
+```
+
+And for production
+
+```console
+$ yarn build
 ```
 
 ## Tests
